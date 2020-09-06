@@ -9,7 +9,30 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"github.com/jcatala/gqm/utility"
 )
+
+
+func notify2Telegram(builder strings.Builder){
+
+	m := utility.ParseConfig(false)
+	bot := utility.GenBot(m["apikey"])
+	chatId, err := utility.GetNewChatId(bot,m["savedChatId"] , false)
+	if err != nil{
+		log.Fatalln(err)
+		return
+	}
+	chatIdInt, err := strconv.ParseInt(chatId, 10 , 64)
+	if err != nil{
+		log.Fatalln(err)
+	}
+	// Here we craft a new msg
+	messageBytes := []byte(builder.String())
+	utility.SendMsgPredefined(bot, chatIdInt, true, false, messageBytes)
+	return
+
+
+}
 
 func generateResponse(v bool, rBody string, redirect string) (string, error){
 
@@ -50,8 +73,9 @@ func handleConnection(c net.Conn, v bool, rBody string, redirect string, notify 
 	isValid := false
 	requestText := strings.Builder{}
 	go func(c net.Conn, isValid *bool, prefix string, request *strings.Builder) {
+		reader := bufio.NewReader(c)
 		for {
-			line,err := bufio.NewReader(c).ReadString('\n')
+			line,err := reader.ReadString('\n')
 			if strings.Contains(line, prefix){
 				*isValid = true
 			}
@@ -59,7 +83,7 @@ func handleConnection(c net.Conn, v bool, rBody string, redirect string, notify 
 				break
 			}
 			request.WriteString(line)
-			request.WriteString("\n")
+			//request.WriteString("\n")
 		}
 	}(c, &isValid, prefix, &requestText)
 
@@ -89,6 +113,9 @@ func handleConnection(c net.Conn, v bool, rBody string, redirect string, notify 
 	}
 	c.Write([]byte(string(resp)))
 	c.Close()
+	if notify {
+		notify2Telegram(requestText)
+	}
 
 }
 
