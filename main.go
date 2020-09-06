@@ -75,7 +75,10 @@ func handleConnection(c net.Conn, v bool, rBody string, redirect string, notify 
 	go func(c net.Conn, isValid *bool, prefix string, request *strings.Builder) {
 		reader := bufio.NewReader(c)
 		for {
+			// Need to find a better way to read the entire incoming request
 			line,err := reader.ReadString('\n')
+			// If the prefix is contained on one line of the incoming request
+			// Make the request valid
 			if strings.Contains(line, prefix){
 				*isValid = true
 			}
@@ -83,7 +86,6 @@ func handleConnection(c net.Conn, v bool, rBody string, redirect string, notify 
 				break
 			}
 			request.WriteString(line)
-			//request.WriteString("\n")
 		}
 	}(c, &isValid, prefix, &requestText)
 
@@ -92,9 +94,11 @@ func handleConnection(c net.Conn, v bool, rBody string, redirect string, notify 
 		isValid = true
 	}
 
+	// Wait to read the entire request
+	// FIND A BETTER WAY !
 	time.Sleep(2 * time.Second)
 
-	// If the request is not valid, write out invalid, and do not proceed
+	// If the request is not valid, write a invalid response, and do not proceed
 	if !isValid{
 		invalid,_ := generateResponse(v, "Invalid!", "")
 		c.Write([]byte(string(invalid)))
@@ -113,6 +117,7 @@ func handleConnection(c net.Conn, v bool, rBody string, redirect string, notify 
 	}
 	c.Write([]byte(string(resp)))
 	c.Close()
+	// Notify via telegram
 	if notify {
 		notify2Telegram(requestText)
 	}
@@ -122,6 +127,7 @@ func handleConnection(c net.Conn, v bool, rBody string, redirect string, notify 
 func listenServer(port int, v bool, rBody string, redirect string, notify bool, prefix string){
 	PORT := ":" + strconv.Itoa(port)
 	l, err := net.Listen("tcp4", PORT)
+	// Error with an exit due to a used port, or permissions
 	if err != nil{
 		log.Fatalln(err)
 	}
