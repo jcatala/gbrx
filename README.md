@@ -11,7 +11,7 @@ go get -u github.com/jcatala/gbrx
 # Usage
 
 ```bash
-$ gbrx
+$ gbrx -h
   -notify
         Notify the incoming request via telegram bot (Not recommended to listen to root directory)
   -port int
