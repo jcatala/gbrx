@@ -53,6 +53,6 @@ gbrx -verbose -redirect "https://f4d3.io" -notify -prefix "veryhiddenprefix"
 * Find an elegant way to read from the socket.
 * A :beer:
 
-**NOTE: To make the notify flag works, you must to have working the [Go Quick Message](https://github.com/jcatala/gqm), its just a config file :) **
+**NOTE: To make the notify flag works, you must to have working the [Go Quick Message](https://github.com/jcatala/gqm), its just a config file :)**
 
 # Thanks for checking this out!
