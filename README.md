@@ -1,6 +1,6 @@
 # Go blind Receptor
 
-Main usage is to put up an HTTPServer that will notify out the hits, with certain prefix to not get fucked by chinese scanners
+Main usage is to put up a "rogue HTTPServer" that will notify out the hits to a telegram bot, configurable to respond to a certain prefix to not get fucked by chinese scanners.
 
 # Install
 
