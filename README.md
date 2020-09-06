@@ -13,15 +13,15 @@ go get -u github.com/jcatala/gbrx
 ```bash
 $ gbrx -h
   -notify
-        Notify the incoming request via telegram bot (Not recommended to listen to root directory)
+        Notify the incoming request via telegram bot (I do not recommended to listen under the root directory)
   -port int
-        Specify another port, default: 9080 (default 9080)
+        Specify another port (default 9080)
   -prefix string
-        Receive and notify just the requests with some certain prefix.
+        Receive, process and notify just the requests with some certain prefix (anywhere on the request).
   -rbody string
         Custom response body, default: UNIX TIMESTAMP
   -redirect string
-        To make the server redirect somewhere
+        To make the server redirect somewhere (Default: false)
   -verbose
         To be verbose
 ```
