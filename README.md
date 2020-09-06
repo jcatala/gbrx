@@ -4,6 +4,8 @@ Main usage is to put up a "rogue HTTPServer" that will notify out the hits to a 
 
 # Install
 
+Remember to have the `$GOPATH/bin` on your `$PATH`
+
 ```bash
 go get -u github.com/jcatala/gbrx
 ```
