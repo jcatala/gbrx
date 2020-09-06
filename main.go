@@ -130,7 +130,7 @@ func listenServer(port int, v bool, rBody string, redirect string, notify bool, 
 		c, err := l.Accept()
 		if err != nil{
 			fmt.Println(err)
-			return
+			continue
 		}
 		go handleConnection(c, v, rBody, redirect, notify, prefix)
 	}
